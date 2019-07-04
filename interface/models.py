@@ -40,6 +40,7 @@ class DeviceSession(models.Model):
         return self.user + ', ' + self.start + ' through ' + self.stop
 
 class Signal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     device_session = models.ForeignKey(DeviceSession, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
     def __str__(self):

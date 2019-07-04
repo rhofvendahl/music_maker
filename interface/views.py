@@ -40,62 +40,49 @@ def index(request):
 
 @csrf_exempt
 def log_in(request):
-    data = json.loads(request.body)
+    parsed = json.loads(request.body)
     user = User.objects.create(
-        username = data['username'],
-        password = data['password']    )
+        username = parsed['username'],
+        password = parsed['password']
+    )
     app_session = AppSession.objects.create(user=user)
 
     data = {
         "user": {
-            "id": user.id#,
-            # "created_on": user.created_on
+            "id": user.id,
+            "created_on": user.created
         },
         "app_session": {
-            "id": app_session.id#,
-            # "start": app_session.start
+            "id": app_session.id,
+            "start": app_session.start
         }
     }
     return JsonResponse(data)
 
 @csrf_exempt
 def turn_on(request):
-    data = json.loads(request.body)
-    print('AAAAAAAAAAAAAAAAAAAAAAAA', request.body)
-    user = User.objects.create(
-        username = data['username'],
-        password = data['password']    )
-    app_session = AppSession.objects.create(user=user)
+    parsed = json.loads(request.body)
+    device_session = DeviceSession.objects.create(
+        user_id = parsed['userId'],
+        app_session_id = parsed['appSessionId']
+    )
 
     data = {
-        "user": {
-            "id": user.id#,
-            # "created_on": user.created_on
-        },
-        "app_session": {
-            "id": app_session.id#,
-            # "start": app_session.start
+        "device_session": {
+            "id": device_session.id,
         }
     }
     return JsonResponse(data)
 
 @csrf_exempt
 def signal(request):
-    data = json.loads(request.body)
-    print('AAAAAAAAAAAAAAAAAAAAAAAA', request.body)
-    user = User.objects.create(
-        username = data['username'],
-        password = data['password']    )
-    app_session = AppSession.objects.create(user=user)
+    parsed = json.loads(request.body)
+    Signal.objects.create(
+        user_id = parsed['userId'],
+        device_session_id = parsed['deviceSessionId']
+    )
+    return JsonResponse({})
 
-    data = {
-        "user": {
-            "id": user.id#,
-            # "created_on": user.created_on
-        },
-        "app_session": {
-            "id": app_session.id#,
-            # "start": app_session.start
-        }
-    }
-    return JsonResponse(data)
+@csrf_exempt
+def turn_off(request):
+    pass
