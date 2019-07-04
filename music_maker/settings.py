@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC' #PDT didn't work..? Try PT
+TIME_ZONE = 'US/Pacific' #PDT didn't work..? Try PT
 
 USE_I18N = True
 
