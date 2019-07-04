@@ -12,18 +12,30 @@ from django.db import models
 #     votes = models.IntegerField(default=0)
 
 class User(models.Model):
-    username = models.CharField(max_length=20, unique=True)
+    username = models.CharField(max_length=20)#, unique=True) gets in way rn
     password = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.username
+    def current_app_session(self):
+        pass
     def current_device_session(self):
         pass
 
-class DeviceSession(models.Model):
+class AppSession(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     start = models.DateTimeField(auto_now_add=True)
     stop = models.DateTimeField(blank=True, null=True)
+    def __str__(self):
+        return self.user + ', ' + self.start + ' through ' + self.stop
+
+
+class DeviceSession(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    app_session = models.ForeignKey(AppSession, on_delete=models.CASCADE)
+    start = models.DateTimeField(auto_now_add=True)
+    stop = models.DateTimeField(blank=True, null=True)
+    # set app_session to current app session
     def __str__(self):
         return self.user + ', ' + self.start + ' through ' + self.stop
 
